@@ -8,6 +8,7 @@ $(document).ready(function(){
     jsonSearchTools.init([{"title":"1", "create_date":"2019-01-23"},{"title":"2", "create_date":"2019-01-23"},.......]);
 
     jsonSearchTools.doSearch("keyword", "newest | oldest | asc | desc", startIdx, endIdx, function(selectedItemLength, searchItemList){
+        // TODO: your code...
         console.log(selectedItemLength);
         console.log(searchItemList);
     });
