@@ -64,16 +64,10 @@ JsonSearchTools.prototype = function() {
         }
 
         // sort
-        if(sort == null || sort == "" || sort == "newest"){
-            _searchJsonArray = sortASC(_searchJsonArray, sortKey);
-        }
-        else if (sort == "asc"){
+        if(sort == null || sort == "" || sort == "asc"){
             _searchJsonArray = sortASC(_searchJsonArray, sortKey);
         }
         else if (sort == "desc"){
-            _searchJsonArray = sortDESC(_searchJsonArray, sortKey);
-        }
-        else if (sort == "oldest"){
             _searchJsonArray = sortDESC(_searchJsonArray, sortKey);
         }
         else {
