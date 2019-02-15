@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Demo JsonSearchTools</title>
+
+  <style>
+    table {
+      width: 100%;
+    }
+    
+    table thead tr th {
+      border: 1px solid #444444;
+    }
+  </style>
+
+</head>
+<body>
+
+<h1>Demo JsonSearchTools</h1>
+
+<input type="text" id="keyword">
+<button onclick="tableUtils.search();">Search</button>
+<select onchange="tableUtils.search();" id="sort">
+    <option value="newest">newest</option>
+    <option value="oldest">oldest</option>
+</select>
+<br><br>
+
+<table>
+  <thead>
+      <tr>
+        <th>title</th>
+        <th>create date</th>
+      </tr>
+  </thead>
+  <tbody id="demo_tbody">
+  </tbody>
+</table>
+
+<br>
+<span>page:</span>
+<span id="page_number">
+</span>
+
+<script src="./jsonSearchTools/v0.1.0/JsonSearchTools.js"></script>
+<script>
+    window.onload = function(){
+      jsonMapString = '[ { "title": "title-1", "create_date": "2019-01-01" }, { "title": "title-2", "create_date": "2019-01-02" }, { "title": "title-3", "create_date": "2019-01-03" }, { "title": "title-4", "create_date": "2019-01-04" }, { "title": "title-5", "create_date": "2019-01-05" }, { "title": "title-6", "create_date": "2019-01-06" }, { "title": "title-7", "create_date": "2019-01-07" }, { "title": "title-8", "create_date": "2019-01-08" }, { "title": "title-9", "create_date": "2019-01-09" }, { "title": "title-10", "create_date": "2019-01-10" }, { "title": "title-11", "create_date": "2019-01-11" }]';
+      jsonSearchTools = new JsonSearchTools();
+      jsonSearchTools.init(jsonMapString);
+  
+      tableUtils.search(1);
+    }
+  
+    var tableUtils = {
+      tbodyElement: document.getElementById("demo_tbody"),
+      keywordElement: document.getElementById("keyword"),
+      sortElement: document.getElementById("sort"),
+      pageNumberElement: document.getElementById("page_number"),
+
+      clear : function(){
+        tableUtils.tbodyElement.innerHTML = "";
+      },
+
+      search(pageNumber){
+        var rowCount = 5;
+        var keyword = tableUtils.keywordElement.value;
+        var sort = tableUtils.sortElement.value;
+        pageNumber = (pageNumber == null) ? "1": pageNumber;
+        
+        jsonSearchTools.doSearch("title", keyword, "create_date", sort, (pageNumber * rowCount) - rowCount, (pageNumber * rowCount), function(selectedItemLength, searchItemList){
+  
+          tableUtils.clear();
+          for(idx in searchItemList){
+            var searchItem = searchItemList[idx];
+  
+            tableUtils.appendRowToTable(searchItem["title"], searchItem["create_date"]);
+          }
+
+          tableUtils.createPageNumber(selectedItemLength, rowCount);
+        });
+      },
+
+      appendRowToTable : function(title, create_date){
+        var tr = document.createElement("tr");
+        var tdTitle = document.createElement("td");
+        var tdCreateDate = document.createElement("td");
+
+        tdTitle.innerText = title;
+        tdCreateDate.innerText = create_date;
+
+        tr.appendChild(tdTitle);
+        tr.appendChild(tdCreateDate);
+        tableUtils.tbodyElement.appendChild(tr);
+      },
+
+      createPageNumber : function(selectedItemLength, rowCount){
+        var pageNumberCount = Math.ceil(selectedItemLength/rowCount);
+
+        tableUtils.pageNumberElement.innerHTML = "";
+
+        for(var i=0; i<pageNumberCount; i++){
+          var pageNumer = i + 1;
+          var a = document.createElement("a");
+          a.setAttribute("href", "#");
+          a.setAttribute("onclick", "tableUtils.search({pageNumber});".replace("{pageNumber}", pageNumer));
+          a.style.margin = "5px";
+          a.innerText = pageNumer;
+
+          tableUtils.pageNumberElement.appendChild(a);
+        }
+      }
+    }
+</script>
+
+
+</body>
+</html>
