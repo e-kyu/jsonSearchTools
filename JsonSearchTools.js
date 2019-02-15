@@ -1,3 +1,9 @@
+/*!
+ * jsonSearchTools v1.0.0 (https://github.com/kyu940/jsonSearchTools)
+ * Copyright "Lee Kyu"
+ * Licensed under the MIT license
+ */
+
 var JsonSearchTools = function(){};
 
 JsonSearchTools.prototype = function() {
